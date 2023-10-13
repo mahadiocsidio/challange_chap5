@@ -4,11 +4,11 @@ POST http://localhost:3000/api/v1/users
 Content-Type: application/json
 
 {
-  "name": "Taufik",
-  "email": "hidayat@dev.com",
+  "name": "Yoi",
+  "email": "test123@dev.com",
   "password": "12345678",
   "identity_type": "NO HP",
-  "identity_number": "08123456789"
+  "identity_number": "08987654321"
 }
 
 # GET ALL USERS
@@ -27,8 +27,8 @@ Content-Type: application/json
 
 {
   "identity_type": "NO HP",
-  "identity_number": "08123456789",
-  "address": "yogyakarta1"
+  "identity_number": "08987654321",
+  "address": "yogya"
 }
 
 # CREATE ACCOUNT
