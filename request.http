@@ -1,6 +1,6 @@
 # CREATE USER
 ###
-POST http://localhost:3000/api/v1/users
+POST http://localhost:3000/api/users
 Content-Type: application/json
 
 {
@@ -13,11 +13,11 @@ Content-Type: application/json
 
 # GET ALL USERS
 ###
-GET http://localhost:3000/api/v1/users
+GET http://localhost:3000/api/users
 
 # GET DETAIL USER
 ###
-GET http://localhost:3000/api/v1/users/1
+GET http://localhost:3000/api/users/1
 
 # UPDATE USER PROFILE
 # 1 is userId

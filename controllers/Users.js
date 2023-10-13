@@ -28,16 +28,23 @@ const getUserById = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, identity_type, identity_number, address} = req.body;
     try {
         const user = await prisma.users.create({
             data: {
-                name,
-                email,
-                password
+                name : value.name,
+                email : value.email,
+                password : value.password,
+                profile: {
+                    create: {
+                      identity_type: value.identity_type,
+                      identity_number: value.identity_number,
+                      address: value.address,
+                    },
+                  },
             },
         });
-        res.status(201).json(user);
+        res.status(201).json({success : true, message : 'User Created', data:user});
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
