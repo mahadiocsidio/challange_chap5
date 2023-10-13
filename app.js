@@ -5,7 +5,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use('/api', require('./routes/user_routes'));
+app.use('/api/v1', require('./routes/routing'));
 app.get('/api', (req, res) => res.send('OK'));
 
 

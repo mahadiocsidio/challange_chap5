@@ -52,7 +52,7 @@ const createUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
     const { id } = req.params;
-    const { name, email } = req.body;
+    const { name, email, password, identity_type, identity_number, address} = req.body;
     try {
         const user = await prisma.users.update({
             where: {
@@ -61,9 +61,17 @@ const updateUser = async (req, res) => {
             data: {
                 name,
                 email,
+                password,
+                profile: {
+                    create: {
+                      identity_type,
+                      identity_number,
+                      address,
+                    },
+                  },
             },
         });
-        res.status(200).json(user);
+        res.status(200).json({success : true, message : 'User Updated', data:user});
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

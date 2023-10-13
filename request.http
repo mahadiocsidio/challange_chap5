@@ -1,23 +1,23 @@
 # CREATE USER
 ###
-POST http://localhost:3000/api/users
+POST http://localhost:3000/api/v1/users
 Content-Type: application/json
 
 {
-  "name": "eak",
-  "email": "test124@gmail.com",
-  "password": "pass12",
+  "name": "blok",
+  "email": "test125@gmail.com",
+  "password": "pass1234",
   "identity_type": "NO HP",
   "identity_number": "08987654321"
 }
 
 # GET ALL USERS
 ###
-GET http://localhost:3000/api/users
+GET http://localhost:3000/api/v1/users
 
 # GET DETAIL USER
 ###
-GET http://localhost:3000/api/users/1
+GET http://localhost:3000/api/v1/users/1
 
 # UPDATE USER PROFILE
 # 1 is userId
@@ -28,7 +28,7 @@ Content-Type: application/json
 {
   "identity_type": "NO HP",
   "identity_number": "08987654321",
-  "address": "yogya"
+  "address": "bali"
 }
 
 # CREATE ACCOUNT
