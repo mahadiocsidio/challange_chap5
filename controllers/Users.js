@@ -32,14 +32,14 @@ const createUser = async (req, res) => {
     try {
         const user = await prisma.users.create({
             data: {
-                name : value.name,
-                email : value.email,
-                password : value.password,
+                name,
+                email,
+                password,
                 profile: {
                     create: {
-                      identity_type: value.identity_type,
-                      identity_number: value.identity_number,
-                      address: value.address,
+                      identity_type,
+                      identity_number,
+                      address,
                     },
                   },
             },

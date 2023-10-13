@@ -4,9 +4,9 @@ POST http://localhost:3000/api/users
 Content-Type: application/json
 
 {
-  "name": "Yoi",
-  "email": "test123@dev.com",
-  "password": "12345678",
+  "name": "eak",
+  "email": "test124@gmail.com",
+  "password": "pass12",
   "identity_type": "NO HP",
   "identity_number": "08987654321"
 }
