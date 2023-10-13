@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 const getUsers = async (req, res) => {
     try {
-        const users = await prisma.user.findMany();
+        const users = await prisma.users.findMany();
         res.status(200).json(users);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -13,7 +13,7 @@ const getUsers = async (req, res) => {
 const getUserById = async (req, res) => {
     const { id } = req.params;
     try {
-        const user = await prisma.user.findUnique({
+        const user = await prisma.users.findUnique({
             where: {
                 id: parseInt(id),
             },
@@ -28,12 +28,13 @@ const getUserById = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-    const { name, email } = req.body;
+    const { name, email, password } = req.body;
     try {
-        const user = await prisma.user.create({
+        const user = await prisma.users.create({
             data: {
                 name,
                 email,
+                password
             },
         });
         res.status(201).json(user);
@@ -46,7 +47,7 @@ const updateUser = async (req, res) => {
     const { id } = req.params;
     const { name, email } = req.body;
     try {
-        const user = await prisma.user.update({
+        const user = await prisma.users.update({
             where: {
                 id: parseInt(id),
             },
@@ -64,7 +65,7 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     const { id } = req.params;
     try {
-        await prisma.user.delete({
+        await prisma.users.delete({
             where: {
                 id: parseInt(id),
             },
