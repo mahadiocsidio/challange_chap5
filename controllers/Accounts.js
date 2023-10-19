@@ -1,10 +1,11 @@
-const  prisma = require('@prisma/client');
+const { PrismaClient } = require('@prisma/client');
+const  prisma = new PrismaClient();
 
 const createAccount = async (req, res) => {
   try {
     const { user_id, bank_name, bank_account_number, balance } = req.body;
 
-    if (error) return res.status(400).json({ success: false, message: error.message, data: null });
+    // if (error) return res.status(400).json({ success: false, message: error.message, data: null });
 
     const account = await prisma.bank_Accounts.create({
       data: {
@@ -31,6 +32,7 @@ const getAccounts = async (req, res) => {
       select: {
         id: true,
         bank_name: true,
+        bank_account_number: true,
         balance: true,
         createdAt: true,
         updatedAt: true,

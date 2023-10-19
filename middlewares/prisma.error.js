@@ -1,6 +1,6 @@
-import { Prisma } from "@prisma/client";
+const { Prisma } = require ("@prisma/client");
 
-export const errorHandler = (err, req, res, next) => {
+const errorHandler = (err, req, res, next) => {
   return res.status(500).json({
     status: false,
     message: "Internal Server error",
@@ -8,7 +8,7 @@ export const errorHandler = (err, req, res, next) => {
   });
 };
 
-export const prismaErrorHandler = (err, req, res, next) => {
+const prismaErrorHandler = (err, req, res, next) => {
   const error = err.message.split("\n");
 
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
@@ -50,7 +50,7 @@ export const prismaErrorHandler = (err, req, res, next) => {
   });
 };
 
-export const zodErrorHandler = (err, req, res, next) => {
+const zodErrorHandler = (err, req, res, next) => {
   return res.status(400).json({
     status: false,
     message: "Bad Request",
@@ -61,9 +61,15 @@ export const zodErrorHandler = (err, req, res, next) => {
   });
 };
 
-export const notFound = (req, res, next) => {
+const notFound = (req, res, next) => {
   res.status(404).json({
     status: false,
     message: "Not Found",
   });
 };
+module.exports= {
+  errorHandler,
+  prismaErrorHandler,
+  zodErrorHandler,
+  notFound,
+}

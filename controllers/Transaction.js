@@ -1,10 +1,11 @@
-const prisma = require('@prisma/client');
+const { PrismaClient } = require('@prisma/client');
+const  prisma = new PrismaClient();
 
 const createTransaction = async (req, res) => {
   try {
     const { amount, source_account_id, destination_account_id } = req.body;
 
-    if (error) return res.status(400).json({ success: false, message: error.message, data: null });
+    // if (error) return res.status(400).json({ success: false, message: error.message, data: null });
 
     const sourceAccount = await prisma.bank_Accounts.findUnique({
       where: {

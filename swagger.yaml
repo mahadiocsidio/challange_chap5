@@ -1,0 +1,378 @@
+openapi: 3.0.3
+info:
+  title: Basic Banking Systems
+  description: |-
+    Aplikasi ini akan berguna untuk membantu clients mendapatkan informasi tentang bagaimana project ini berjalan.
+  contact:
+    email: mahadiocsidio@students.amikom.com
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api/v1
+tags:
+  - name: User
+    description: Operations related to users
+  - name: Bank_Acounts
+    description: Operations related to account
+  - name: Transaction
+    description: Operations related to transactions
+  - name: Authentication
+    description: Operations related to authentication
+paths:
+  /users:
+    post:
+      tags:
+        - User
+      operationId: post-create-new-user
+      summary: Create a new user
+      description: Creates a new user with the provided information.
+      requestBody:
+        $ref: "#/components/requestBodies/CreateUser"
+      responses:
+        "201":
+          description: User Created
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/BasicResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/UserModel"
+    get:
+      tags:
+        - User
+      operationId: get-fetch-all-user
+      summary: Get all users
+      description: Retrieves a list of all registered users.
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/BasicResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          users:
+                            type: array
+                            items:
+                              $ref: "#/components/schemas/UserModel"
+  "/users/{userId}":
+    get:
+      tags:
+        - User
+      operationId: get-fetch-user-detail
+      summary: Get user details
+      description: Retrieves details of a specific user.
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: The ID of the user to retrieve.
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/BasicResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/UserModelDetailed"
+    # put:
+    #   tags:
+    #     - User
+    #   operationId: put-update-user
+    #   summary: Update user details
+    #   description: Updates details of a specific user.
+    #   parameters:
+    #     - in: path
+    #       name: userId
+    #       schema:
+    #         type: integer
+    #       required: true
+    #       description: The ID of the user to update.
+    #   responses:
+    #     "200":
+    #       description: Successful user update
+    #       content:
+    #         application/json:
+    #           schema:
+    #             allOf:
+    #               - $ref: "#/components/schemas/BasicResponse"
+    #               - type: object
+    #                 properties:
+    #                   data:
+    #                     type: object
+    #                     example: null
+    # delete:
+    #   tags:
+    #     - User
+    #   operationId: delete-remove-user
+    #   summary: Delete user
+    #   description: Deletes a specific user.
+    #   parameters:
+    #     - in: path
+    #       name: userId
+    #       schema:
+    #         type: integer
+    #       required: true
+    #       description: The ID of the user to delete.
+    #   responses:
+    #     "200":
+    #       description: Successful user deletion
+    #       content:
+    #         application/json:
+    #           schema:
+    #             allOf:
+    #               - $ref: "#/components/schemas/BasicResponse"
+    #               - type: object
+    #                 properties:
+    #                   data:
+    #                     type: object
+    #                     example: null
+  /accounts:
+    post:
+      tags:
+        - Bank_Acounts
+      operationId: post-create-new-account
+      summary: Create a new account
+      description: Creates a new account with the provided information.
+      requestBody:
+        $ref: "#/components/requestBodies/CreateAccounts"
+      responses:
+        "201":
+          description: Successful account creation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/BasicResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/AccountModel"
+    get:
+      tags:
+        - Bank_Acounts
+      operationId: get-fetch-all-bank-accounts
+      summary: Get all Bank Accounts
+      description: Retrieves a list of all registered accounts.
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/BasicResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          users:
+                            type: array
+                            items:
+                              $ref: "#/components/schemas/AccountModel"
+  "/accounts/{userId}":
+    get:
+      tags:
+        - Bank_Acounts
+      operationId: get-fetch-bank-account-detail
+      summary: Get account details
+      description: Retrieves details of a specific accounts.
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: The ID of the user to retrieve.
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/BasicResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/AccountModelDetailed"
+components:
+  schemas:
+    BasicResponse:
+      title: BasicResponse
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "success"
+    UserModel:
+      title: User
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "blok"
+        email:
+          type: string
+          example: "test125@gmail.com"
+        password:
+          type: string
+          example: "pass1234"
+    UserModelDetailed:
+      title: Detailed User
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "blok"
+        email:
+          type: string
+          example: "test125@gmail.com"
+        profile:
+          properties:
+            id:
+              type: integer
+              example: 1
+            user_id:
+              type: integer
+              example: 1
+            identity_type:
+              type: string
+              example: "No_HP"
+            identity_number:
+              type: string
+              example: "081234567890"
+            address:
+              type: string
+              example: null
+            created_at:
+              type: string
+              example: "2021-08-10T08:00:00.000Z"
+            updated_at:
+              type: string
+              example: "2021-08-10T08:00:00.000Z"
+    AccountModel:
+      title: Account
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        bank_name:
+          type: string
+          example: "Mandiri"
+        bank_account_number:
+          type: string
+          example: "081929182741332"
+        balance:
+          type: integer
+          example: 100000
+        created_at:
+          type: string
+          example: "2021-08-10T08:00:00.000Z"
+        updated_at:
+          type: string
+          example: "2021-08-10T08:00:00.000Z"
+    AccountModelDetailed:
+      title: Detailed Account
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        user_id:
+          type: integer
+          example: 1
+        bank_name:
+          type: string
+          example: "Mandiri"
+        bank_account_number:
+          type: string
+          example: "081929182741332"
+        balance:
+          type: integer
+          example: 100000
+        created_at:
+          type: string
+          example: "2021-08-10T08:00:00.000Z"
+        updated_at:
+          type: string
+          example: "2021-08-10T08:00:00.000Z"
+        history:
+          type: object
+          properties:
+            sender:
+              type: array
+              example: []
+            receive:
+              type: array
+              example: []
+        user:
+          type: object
+          properties:
+            name:
+              type: string
+              example: "blok"
+            email:
+              type: string
+              example: test123@gmail.com
+  requestBodies:
+    CreateUser:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "blok"
+              email:
+                type: string
+                example: "test125@gmail.com"
+              password:
+                type: string
+                example: "pass1234"
+              identity_type:
+                type: string
+                example: "No_HP"
+              identity_number:
+                type: string
+                example: "081234567890"
+    CreateAccounts:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              bank_name:
+                type: string
+                example: "Mandiri"
+              bank_account_number:
+                type: string
+                example: "081929182741332"
+              balance:
+                type: integer
+                example: 100000
