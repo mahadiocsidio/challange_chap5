@@ -1,12 +1,12 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const getUsers = async (req, res) => {
+const getUsers = async (req, res,next) => {
     try {
         const users = await prisma.users.findMany();
         res.status(200).json(users);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(400).json({ error: error.message });
     }
 };
 
@@ -28,7 +28,7 @@ const getUserById = async (req, res) => {
         }
         res.status(200).json(user);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(400).json({ error: error.message });
     }
 };
 
@@ -51,7 +51,7 @@ const createUser = async (req, res) => {
         });
         res.status(201).json({success : true, message : 'User Created', data:user});
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(400).json({ error: error.message });
     }
 };
 
@@ -78,7 +78,7 @@ const updateUser = async (req, res) => {
         });
         res.status(200).json({success : true, message : 'User Updated', data:user});
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(400).json({ error: error.message });
     }
 };
 
@@ -92,7 +92,7 @@ const deleteUser = async (req, res) => {
         });
         res.status(204).send();
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(400).json({ error: error.message });
     }
 };
 

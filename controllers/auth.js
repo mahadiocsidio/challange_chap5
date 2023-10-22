@@ -76,3 +76,4 @@ const authenticate = async (req,res)=>{
         res.status(500).json({ error: error.message });
     }
 }
+module.exports={register,login,authenticate};
