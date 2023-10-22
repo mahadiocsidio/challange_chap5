@@ -39,6 +39,13 @@ paths:
                     properties:
                       data:
                         $ref: "#/components/schemas/UserModel"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/UnauthorizedResponse'
     get:
       tags:
         - User
@@ -88,58 +95,39 @@ paths:
                     properties:
                       data:
                         $ref: "#/components/schemas/UserModelDetailed"
-    # put:
-    #   tags:
-    #     - User
-    #   operationId: put-update-user
-    #   summary: Update user details
-    #   description: Updates details of a specific user.
-    #   parameters:
-    #     - in: path
-    #       name: userId
-    #       schema:
-    #         type: integer
-    #       required: true
-    #       description: The ID of the user to update.
-    #   responses:
-    #     "200":
-    #       description: Successful user update
-    #       content:
-    #         application/json:
-    #           schema:
-    #             allOf:
-    #               - $ref: "#/components/schemas/BasicResponse"
-    #               - type: object
-    #                 properties:
-    #                   data:
-    #                     type: object
-    #                     example: null
-    # delete:
-    #   tags:
-    #     - User
-    #   operationId: delete-remove-user
-    #   summary: Delete user
-    #   description: Deletes a specific user.
-    #   parameters:
-    #     - in: path
-    #       name: userId
-    #       schema:
-    #         type: integer
-    #       required: true
-    #       description: The ID of the user to delete.
-    #   responses:
-    #     "200":
-    #       description: Successful user deletion
-    #       content:
-    #         application/json:
-    #           schema:
-    #             allOf:
-    #               - $ref: "#/components/schemas/BasicResponse"
-    #               - type: object
-    #                 properties:
-    #                   data:
-    #                     type: object
-    #                     example: null
+    put:
+      tags:
+        - User
+      operationId: put-update-user
+      summary: Update user details
+      description: Updates details of a specific user.
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: The ID of the user to update.
+      responses:
+        "200":
+          description: Successful user update
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/BasicResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        example: null
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/UnauthorizedResponse'
   /accounts:
     post:
       tags:
@@ -161,6 +149,13 @@ paths:
                     properties:
                       data:
                         $ref: "#/components/schemas/AccountModel"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/UnauthorizedResponse'
     get:
       tags:
         - Bank_Accounts
@@ -244,6 +239,13 @@ paths:
                     properties:
                       data:
                         $ref: "#/components/schemas/TransactionModel"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/UnauthorizedResponse'
     get:
       tags:
         - Transaction
@@ -293,6 +295,112 @@ paths:
                     properties:
                       data:
                         $ref: "#/components/schemas/TransactionModel"
+  /auth/register:
+    post:
+      tags:
+        - Authentication
+      operationId: register
+      summary: Register a new user
+      requestBody:
+        $ref: '#/components/requestBodies/CreateUser'
+      responses:
+        '201':
+          description: Successfull operation
+        '400':
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/UnauthorizedResponse'
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      operationId: login
+      summary: Login a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: 'bujang@mail.com'
+                password:
+                  type: string
+                  example: 'examplepassword'
+      responses:
+        '200':
+          description: Successfull operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/BasicResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          token:
+                            type: string
+                            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'
+        '400':
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/BadRequestResponse'
+  /auth/authenticate:
+    get:
+      tags:
+        - Authentication
+      operationId: authenticate
+      summary: Authenticate a user
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfull operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/BasicResponse'
+                  - type: object
+                    properties:
+                      data:
+                        allOf:
+                          - $ref: '#/components/schemas/UserModel'
+                          - type: object
+                          - properties:
+                              profile:
+                                $ref: '#/components/schemas/ProfileModel'
+
+        '400':
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/UnauthorizedResponse'
 components:
   schemas:
     BasicResponse:
@@ -305,6 +413,30 @@ components:
         message:
           type: string
           example: "success"
+    BadRequestResponse:
+      title: BadRequestResponse
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: 'some error from user'
+        data:
+          example: null
+    UnauthorizedResponse:
+      title: UnauthorizedResponse
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: 'Unauthorized'
+        data:
+          example: null
     UserModel:
       title: User
       type: object
@@ -379,6 +511,19 @@ components:
         updated_at:
           type: string
           example: "2021-08-10T08:00:00.000Z"
+    ProfileModel:
+      title: Profile
+      type: object
+      properties:
+        identity_type:
+          type: string
+          example: 'NO HP'
+        identity_number:
+          type: string
+          example: '08123456789'
+        address:
+          type: string
+          example: 'jogja'
     AccountModelDetailed:
       title: Detailed Account
       type: object
