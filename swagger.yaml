@@ -11,7 +11,7 @@ servers:
 tags:
   - name: User
     description: Operations related to users
-  - name: Bank_Acounts
+  - name: Bank_Accounts
     description: Operations related to account
   - name: Transaction
     description: Operations related to transactions
@@ -143,7 +143,7 @@ paths:
   /accounts:
     post:
       tags:
-        - Bank_Acounts
+        - Bank_Accounts
       operationId: post-create-new-account
       summary: Create a new account
       description: Creates a new account with the provided information.
@@ -163,7 +163,7 @@ paths:
                         $ref: "#/components/schemas/AccountModel"
     get:
       tags:
-        - Bank_Acounts
+        - Bank_Accounts
       operationId: get-fetch-all-bank-accounts
       summary: Get all Bank Accounts
       description: Retrieves a list of all registered accounts.
@@ -187,7 +187,7 @@ paths:
   "/accounts/{userId}":
     get:
       tags:
-        - Bank_Acounts
+        - Bank_Accounts
       operationId: get-fetch-bank-account-detail
       summary: Get account details
       description: Retrieves details of a specific accounts.
@@ -210,6 +210,89 @@ paths:
                     properties:
                       data:
                         $ref: "#/components/schemas/AccountModelDetailed"
+  /transaction:
+    post:
+      tags:
+        - Transaction
+      operationId: post-create-new-transaction
+      summary: Create a new transaction
+      description: Creates a new transaction with the provided information.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                source_account_id:
+                  type: integer
+                  example: 1
+                destination_account_id:
+                  type: integer
+                  example: 2
+                amount:
+                  type: integer
+                  example: 100000
+      responses:
+        "201":
+          description: Successful transaction creation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/BasicResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/TransactionModel"
+    get:
+      tags:
+        - Transaction
+      operationId: get-fetch-all-transaction
+      summary: Get all transaction
+      description: Retrieves a list of all registered transaction.
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/BasicResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          users:
+                            type: array
+                            items:
+                              $ref: "#/components/schemas/TransactionModel"
+  "/transaction/{Id}":
+    get:
+      tags:
+        - Transaction
+      operationId: get-fetch-transaction-detail
+      summary: Get transaction details
+      description: Retrieves details of a specific transaction.
+      parameters:
+        - in: path
+          name: Id
+          schema:
+            type: integer
+          required: true
+          description: The ID of the transaction to retrieve.
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/BasicResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/TransactionModel"
 components:
   schemas:
     BasicResponse:
@@ -339,6 +422,28 @@ components:
             email:
               type: string
               example: test123@gmail.com
+    TransactionModel:
+      title: Transaction
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        source_account_id:
+          type: integer
+          example: 1
+        destination_account_id:
+          type: integer
+          example: 2
+        amount:
+          type: integer
+          example: 100000
+        created_at:
+          type: string
+          example: "2021-08-10T08:00:00.000Z"
+        updated_at:
+          type: string
+          example: "2021-08-10T08:00:00.000Z"
   requestBodies:
     CreateUser:
       content:
